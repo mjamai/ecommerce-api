@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel,Field, field_validator, model_validator
 from enum import Enum
+from app.routers.products import router as products_router
+
 
 
 app = FastAPI()
+app.include_router(products_router)
 
 @app.get("/")
 def home():
@@ -13,7 +16,7 @@ class ProductStatus(str, Enum):
     active = "active"
     inactive = "inactive"
     out_of_stock = "out_of_stock"
-    
+
 class Product(BaseModel):
     name: str = Field(min_length=3,max_length=50)
     price: float = Field(ge=0)
